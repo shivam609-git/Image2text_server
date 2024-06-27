@@ -51,7 +51,11 @@ const isBold = (element) => {
     return fontSize > 12; 
   };
 
-app.use(cors());
+app.use(cors({
+    origin:["https://image2-text-client.vercel.app"],
+    methods: ["GET" , "POST"],
+    credentials: true
+})); //blank
 app.use(bodyParser.json()); // Parse JSON bodies
 
 app.get('/',async (req,res) =>{
