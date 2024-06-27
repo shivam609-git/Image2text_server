@@ -4,21 +4,23 @@ const Tesseract = require('tesseract.js');
 const path = require('path');
 const fs = require('fs');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const { JSDOM } = require('jsdom'); 
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const User = require("./userdb");
 const ImageDetails = require("./db")
 const app = express();
-const port = 5000;
 
 
 
+dotenv.config();
+const port = process.env.PORT || 5000;
 const mongoose = require("mongoose");
 
  const connectDB = () => {
     mongoose
-      .connect("mongodb://localhost:27017/assignment", {
+      .connect(process.env.MONGO_URI, {
         dbName: "assignment",
       })
       .then((c) => console.log(`DB Connected to ${c.connection.host}`))
@@ -141,7 +143,6 @@ app.post('/login', async (req, res) => {
       return res.status(401).json({ msg: 'Invalid credentials' });
     }
 
-    // If credentials are correct, you can set up a session or token for authentication
     res.json({ msg: 'Login successful' });
 
   } catch (error) {
