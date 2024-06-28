@@ -12,9 +12,14 @@ const User = require("./userdb");
 const ImageDetails = require("./db")
 const app = express();
 
-
-
 dotenv.config();
+
+app.use(cors({
+    origin:["https://image2-text-client.vercel.app"],
+    methods: ["GET","POST","PUT","DELETE"],
+    credentials: true
+})); 
+
 const port = process.env.PORT || 5000;
 const mongoose = require("mongoose");
 
@@ -51,11 +56,7 @@ const isBold = (element) => {
     return fontSize > 12; 
   };
 
-app.use(cors({
-    origin:["https://image2-text-client.vercel.app"],
-    methods: ["GET" , "POST"],
-    credentials: true
-})); //blank
+//blank
 app.use(bodyParser.json()); // Parse JSON bodies
 
 app.get('/',async (req,res) =>{
