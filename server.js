@@ -3,7 +3,7 @@ const multer = require('multer');
 const Tesseract = require('tesseract.js');
 const path = require('path');
 const fs = require('fs');
-const cors = require('cors');
+//const cors = require('cors');
 const dotenv = require('dotenv');
 const { JSDOM } = require('jsdom'); 
 const bodyParser = require('body-parser');
@@ -20,8 +20,15 @@ dotenv.config();
 //   credentials: true,
 //   allowedHeaders: ['Content-Type', 'Authorization'],
 // };
+// app.use(cors(corsOptions));
 
-app.use(cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 
 const port = process.env.PORT || 5000;
 const mongoose = require("mongoose");
@@ -64,12 +71,6 @@ const isBold = (element) => {
 
 
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
 
 app.get('/',async (req,res) =>{
     res.send("Success");
