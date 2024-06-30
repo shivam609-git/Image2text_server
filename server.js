@@ -14,6 +14,8 @@ const app = express();
 
 dotenv.config();
 
+
+
 app.use(cors({
   origin:["https://image2-text-client.vercel.app"],
   methods: ["GET","POST","PUT","DELETE"],
@@ -34,20 +36,20 @@ const mongoose = require("mongoose");
   
   connectDB();
 
-//const upload = multer({ dest: 'uploads/' });
+const storage = multer.memoryStorage();
 
-const storage = multer.diskStorage({
-    destination(req, file, callback) {
-      callback(null, "uploads");
-    },
-    filename(req, file, callback) {
+// const storage = multer.diskStorage({
+//     destination(req, file, callback) {
+//       callback(null, "uploads");
+//     },
+//     filename(req, file, callback) {
     
-      const id2 = Date.now();
-      const extName = file.originalname.split(".").pop();
+//       const id2 = Date.now();
+//       const extName = file.originalname.split(".").pop();
   
-      callback(null, `${id2}.${extName}`);
-    },
-  });
+//       callback(null, `${id2}.${extName}`);
+//     },
+//   });
 
 const upload = multer({ storage});
 
@@ -65,9 +67,10 @@ app.get('/',async (req,res) =>{
 
 app.post('/upload', upload.single('image'), async (req, res) => {
   try {
-    const imagePath = path.join(__dirname, req.file.path);
+   // const imagePath = path.join(__dirname, req.file.path);
+   const imageBuffer = req.file.buffer;
 
-    const { data: { hocr,text} } = await Tesseract.recognize(imagePath, 'eng', {
+    const { data: { hocr,text} } = await Tesseract.recognize(imageBuffer, 'eng', {
         logger: (m) => console.log(m),
         tessedit_create_hocr: '1',
       });
@@ -94,7 +97,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
     await imageDetails.save();
 
-    fs.unlinkSync(imagePath); 
+    //fs.unlinkSync(imagePath); 
     res.json({ text ,boldWords });
    
   } catch (error) {
