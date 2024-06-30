@@ -23,9 +23,16 @@ dotenv.config();
 // app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS'); // Allow specific methods
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allow specific headers
+
+  // If it's a preflight request, respond with 200 status
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+
+  // Move to the next middleware or route handler
   next();
 });
 
