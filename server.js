@@ -21,13 +21,6 @@ const corsOptions = {
   allowedHeaders: ['Content-Type'],
 };
 
-app.use((req, res, next) => {
-  console.log('CORS applied');
-  console.log('Request Origin:', req.headers.origin);
-  console.log('Request Method:', req.method);
-  console.log('Request Headers:', req.headers);
-  next();
-});
 
 app.use(cors(corsOptions));
 
