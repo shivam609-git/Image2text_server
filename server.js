@@ -14,8 +14,23 @@ const app = express();
 
 dotenv.config();
 
+//blank
+app.use(bodyParser.json()); // Parse JSON bodies
+
+
+const allowedOrigins = [
+  'https://image2-text-client.vercel.app',
+  'http://localhost:5173'
+];
+
 const corsOptions = {
-  origin: '*',
+   origin: (origin, callback) => {
+  if (allowedOrigins.includes(origin) || !origin) {
+    callback(null, true);
+  } else {
+    callback(new Error('Not allowed by CORS'));
+  }
+},
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -59,14 +74,20 @@ const isBold = (element) => {
     return fontSize > 12; 
   };
 
-//blank
-app.use(bodyParser.json()); // Parse JSON bodies
+
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.get('/',async (req,res) =>{
     res.send("Success");
 })
 
-app.post('/upload', cors(corsOptions),upload.single('image'), async (req, res) => {
+app.post('/upload',upload.single('image'), async (req, res) => {
   try {
    // const imagePath = path.join(__dirname, req.file.path);
    const imageBuffer = req.file.buffer;
