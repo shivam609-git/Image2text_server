@@ -22,19 +22,12 @@ dotenv.config();
 // };
 // app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS'); // Allow specific methods
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allow specific headers
-
-  // If it's a preflight request, respond with 200 status
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-
-  // Move to the next middleware or route handler
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', 'https://image2-text-client.vercel.app');
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   next();
+// });
 
 
 const port = process.env.PORT || 5000;
@@ -85,6 +78,7 @@ app.get('/',async (req,res) =>{
 
 app.post('/upload',upload.single('image'), async (req, res) => {
   try {
+    res.header('Access-Control-Allow-Origin', 'https://image2-text-client.vercel.app');
    // const imagePath = path.join(__dirname, req.file.path);
    const imageBuffer = req.file.buffer;
 
@@ -116,6 +110,7 @@ app.post('/upload',upload.single('image'), async (req, res) => {
     await imageDetails.save();
 
     //fs.unlinkSync(imagePath); 
+
     res.json({ text ,boldWords });
    
   } catch (error) {
