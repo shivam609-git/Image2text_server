@@ -15,10 +15,10 @@ const app = express();
 dotenv.config();
 
 const corsOptions = {
-   origin: 'https://image2-text-client.vercel.app/',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+   origin: 'https://image2-text-client.vercel.app',
+  methods: ['GET', 'POST'],
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type'],
 };
 
 app.use((req, res, next) => {
