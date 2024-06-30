@@ -14,27 +14,20 @@ const app = express();
 
 dotenv.config();
 
-//blank
-app.use(bodyParser.json()); // Parse JSON bodies
-
-
-const allowedOrigins = [
-  'https://image2-text-client.vercel.app',
-  'http://localhost:5173'
-];
-
 const corsOptions = {
-   origin: (origin, callback) => {
-  if (allowedOrigins.includes(origin) || !origin) {
-    callback(null, true);
-  } else {
-    callback(new Error('Not allowed by CORS'));
-  }
-},
+   origin: 'https://image2-text-client.vercel.app/',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
+
+app.use((req, res, next) => {
+  console.log('CORS applied');
+  console.log('Request Origin:', req.headers.origin);
+  console.log('Request Method:', req.method);
+  console.log('Request Headers:', req.headers);
+  next();
+});
 
 app.use(cors(corsOptions));
 
@@ -68,6 +61,9 @@ const storage = multer.memoryStorage();
 //   });
 
 const upload = multer({ storage});
+//blank
+app.use(bodyParser.json()); // Parse JSON bodies
+
 
 const isBold = (element) => {
     const fontSize = parseInt(element['font-size'], 10);
