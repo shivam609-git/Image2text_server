@@ -14,13 +14,14 @@ const app = express();
 
 dotenv.config();
 
+const corsOptions = {
+  origin: 'https://image2-text-client.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-
-app.use(cors({
-  origin:["https://image2-text-client.vercel.app"],
-  methods: ["GET","POST","PUT","DELETE"],
-  credentials: true
-})); 
+app.use(cors(corsOptions));
 
 const port = process.env.PORT || 5000;
 const mongoose = require("mongoose");
