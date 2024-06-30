@@ -3,7 +3,7 @@ const multer = require('multer');
 const Tesseract = require('tesseract.js');
 const path = require('path');
 const fs = require('fs');
-//const cors = require('cors');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const { JSDOM } = require('jsdom'); 
 const bodyParser = require('body-parser');
@@ -20,10 +20,10 @@ dotenv.config();
 //   credentials: true,
 //   allowedHeaders: ['Content-Type', 'Authorization'],
 // };
-// app.use(cors(corsOptions));
+app.use(cors());
 
 // app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', 'https://image2-text-client.vercel.app');
+//   res.header('Access-Control-Allow-Origin', '*');
 //   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 //   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 //   next();
@@ -78,7 +78,6 @@ app.get('/',async (req,res) =>{
 
 app.post('/upload',upload.single('image'), async (req, res) => {
   try {
-    res.header('Access-Control-Allow-Origin', 'https://image2-text-client.vercel.app');
    // const imagePath = path.join(__dirname, req.file.path);
    const imageBuffer = req.file.buffer;
 
@@ -110,7 +109,6 @@ app.post('/upload',upload.single('image'), async (req, res) => {
     await imageDetails.save();
 
     //fs.unlinkSync(imagePath); 
-
     res.json({ text ,boldWords });
    
   } catch (error) {
