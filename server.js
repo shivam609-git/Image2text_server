@@ -20,14 +20,14 @@ dotenv.config();
 //   credentials: true,
 //   allowedHeaders: ['Content-Type', 'Authorization'],
 // };
-app.use(cors());
+//app.use(cors());
 
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   next();
-// });
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 
 const port = process.env.PORT || 5000;
@@ -76,7 +76,7 @@ app.get('/',async (req,res) =>{
     res.send("Success");
 })
 
-app.post('/upload',cors(),upload.single('image'), async (req, res) => {
+app.post('/upload',upload.single('image'), async (req, res) => {
   try {
    // const imagePath = path.join(__dirname, req.file.path);
    const imageBuffer = req.file.buffer;
