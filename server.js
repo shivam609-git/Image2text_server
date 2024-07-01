@@ -76,7 +76,7 @@ app.get('/',async (req,res) =>{
     res.send("Success");
 })
 
-app.post('/upload',upload.single('image'), async (req, res) => {
+app.post('/upload',cors(),upload.single('image'), async (req, res) => {
   try {
    // const imagePath = path.join(__dirname, req.file.path);
    const imageBuffer = req.file.buffer;
